@@ -1,0 +1,23 @@
+{
+  "name": "org-performance-app",
+  "version": "0.0.1-pre",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "body-parser": "~1.2.0",
+    "cookie-parser": "~1.1.0",
+    "connect-redis": "~2.0.0",
+    "express": "~4.2.0",
+    "express-session": "~1.1.0",
+    "morgan": "~1.0.1",
+    "neo4j": "~1.1.0",
+    "node.extend": "~1.0.10",
+    "passport": "~0.2.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "should": "~3.3.1"
+  }
+}
