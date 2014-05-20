@@ -14,7 +14,8 @@
     "morgan": "~1.0.1",
     "neo4j": "~1.1.0",
     "node.extend": "~1.0.10",
-    "passport": "~0.2.0"
+    "passport": "~0.2.0",
+    "stylus": "~0.45.1"
   },
   "devDependencies": {
     "mocha": "~1.18.2",
