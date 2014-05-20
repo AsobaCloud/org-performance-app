@@ -1,0 +1,19 @@
+footerHeight = 150px
+footerPaddingTop = 20px
+
+html, body
+  height: 100%;
+
+.sticky-wrap
+  min-height: 100%;
+  padding-bottom footerHeight
+
+.sticky-footer
+  position relative
+  margin-top: (-1 * footerHeight)
+  height footerHeight
+  clear both
+  padding-top footerPaddingTop
+  .navbar
+    margin 0
+    height footerHeight - footerPaddingTop
