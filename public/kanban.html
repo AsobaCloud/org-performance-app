@@ -5,8 +5,10 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/jsplumb/jsplumb.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.jqplot.css" />
 
   </head>
 
@@ -28,13 +30,13 @@
               <li><a href="/">Home</a></li>
               <li><a href="#profile">My Profile</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Directory <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+                  <li><a href="/logout">logout</a></li>
                   <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#news">News</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li><a href="#">Some link</a></li>
                 </ul>
               </li>
             </ul>
@@ -64,7 +66,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a href="#org-chart">
+                  <a href="#orgchart">
                     Org Chart
                   </a>
                 </h4>
@@ -74,7 +76,8 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseKanban">
+                  <!-- TODO: what to show when top level is clicked -->
+                  <a class="js-link" data-toggle="collapse" data-parent="#accordion" data-target="#collapseKanban">
                     Kanban
                   </a>
                 </h4>
@@ -102,7 +105,7 @@
 
                               <div class="panel-heading">
                                 <h4 class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#subAccordion1" href="#innerCollapse1">
+                                  <a data-toggle="collapse" data-parent="#subAccordion1" data-target="#innerCollapse1" href="#kanban">
                                     Sub-Team #1
                                   </a>
                                 </h4>
@@ -119,7 +122,7 @@
                             <div class="panel panel-default">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#subAccordion1" href="#innerCollapse2">
+                                  <a data-toggle="collapse" data-parent="#subAccordion1" data-target="#innerCollapse2" href="#kanban">
                                     Sub-Team #2
                                   </a>
                                 </h4>
@@ -143,7 +146,7 @@
                       
                       <div class="panel-heading">
                         <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="#kanbanAccordion" href="#collapse2">
+                          <a data-toggle="collapse" data-parent="#kanbanAccordion" data-target="#collapse2" href="#kanban">
                             Team #2
                           </a>
                         </h4>
@@ -180,77 +183,368 @@
 
         <div class="col-xs-9 main-content">
 
-          <div class="row">
-            <h2 class="text-center text-primary">Team Work Tracking</h2>
-          </div>
+          <div id="profile-container" class="view-container">
 
-          <div class="row kanban-content">
+            <div class="row">
+              <h2>Profile</h2>
+              <div class="divider"></div>
+            </div>
 
-            <div class="col-xs-2 backlog-ct kanban-list">
+            <div class="row">
 
-              <div>
-                <h4 class="text-center">Backlog</h4>
+              <div id="profile-burn-rate" class="col-sm-6 chart"></div>
+              <div class="col-sm-5">
+                <h3>Tasks in Progress</h3>
+                <ul class="list-group">
+                  <li class="list-group-item">Task 1</li>
+                  <li class="list-group-item">Task 2</li>
+                  <li class="list-group-item">Task 3</li>
+                </ul>
               </div>
 
             </div>
 
-            <div class="col-xs-2 pending-ct kanban-list">
+            <div class="row">
 
-              <div>
-                <h4 class="text-center">Pending</h4>
-              </div>
-
-            </div>
-
-            <div class="col-xs-2 doing-ct kanban-list">
-
-              <div>
-                <h4 class="text-center">Doing</h4>
-              </div>
-
-              <div class="kanban-card">
-                <p class="kanban-card-title text-center text-info">Card Title</p>
-              </div>
-
-            </div>
-
-            <div class="col-xs-2 blocked-ct kanban-list">
-
-              <div>
-                <h4 class="text-center">Blocked</h4>
-              </div>
-
-            </div>
-
-            <div class="col-xs-2 done-ct kanban-list">
-
-              <div class=" ">
-                <h4 class="text-center">Done</h4>
+              <div id="profile-resource-util" class="col-sm-6 chart"></div>
+              <div class="col-sm-5">
+                <h3>Completed Tasks</h3>
+                <ul class="list-group">
+                  <li class="list-group-item">Task 1</li>
+                  <li class="list-group-item">Task 2</li>
+                  <li class="list-group-item">Task 3</li>
+                </ul>
               </div>
 
             </div>
 
           </div>
 
-          <div class="row stats-container">
+          <div id="dashboard-container" class="view-container">
 
-            <div class="col-sm-4">
-              <h4 class="text-muted">Burn Rate</h4>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar"
-                     aria-valuenow="60" aria-valuemin="0"
-                     aria-valuemax="100" style="width: 60%;">
-                  <span class="sr-only">60%</span>
+            <div class="row">
+              <h2>Dashboard</h2>
+              <div class="divider"></div>
+            </div>
+
+            <div class="row">
+
+              <div id="overall-burn-rate" class="col-sm-6 chart"></div>
+              <div id="overall-resource-util" class="col-sm-6 chart"></div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                <h1>Budget Status <span class="text-danger">$xxx</span></h1>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div id="kanban-container" class="view-container">
+
+            <div class="row">
+              <h2 class="text-center text-primary">Team Work Tracking</h2>
+            </div>
+
+            <div class="row kanban-content">
+
+              <div class="col-xs-2 backlog-ct kanban-list">
+
+                <div>
+                  <h4 class="text-center">Backlog</h4>
+                </div>
+
+              </div>
+
+              <div class="col-xs-2 pending-ct kanban-list">
+
+                <div>
+                  <h4 class="text-center">Pending</h4>
+                </div>
+
+              </div>
+
+              <div class="col-xs-2 doing-ct kanban-list">
+
+                <div>
+                  <h4 class="text-center">Doing</h4>
+                </div>
+
+                <div class="kanban-card">
+                  <p class="kanban-card-title text-center text-info">Card Title</p>
+                </div>
+
+              </div>
+
+              <div class="col-xs-2 blocked-ct kanban-list">
+
+                <div>
+                  <h4 class="text-center">Blocked</h4>
+                </div>
+
+              </div>
+
+              <div class="col-xs-2 done-ct kanban-list">
+
+                <div class=" ">
+                  <h4 class="text-center">Done</h4>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row stats-container">
+
+              <div class="col-sm-4">
+                <h4 class="text-muted">Burn Rate</h4>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar"
+                       aria-valuenow="60" aria-valuemin="0"
+                       aria-valuemax="100" style="width: 60%;">
+                    <span class="sr-only">60%</span>
+                  </div>
                 </div>
               </div>
+              <div class="col-sm-4">
+                <h4 class="text-muted">Budget</h4>
+                <h2>$6k Over</h2>
+              </div>
+              <div class="col-sm-4">
+                <h4 class="text-muted">Resource Utilization</h4>
+                <h2>87%</h2>
+              </div>
+
             </div>
-            <div class="col-sm-4">
-              <h4 class="text-muted">Budget</h4>
-              <h2>$6k Over</h2>
+
+          </div>
+
+          <div id="orgchart-container" class="view-container">
+
+            <div class="row">
+              <h2>Organizational Chart</h2>
+              <div class="divider"></div>
             </div>
-            <div class="col-sm-4">
-              <h4 class="text-muted">Resource Utilization</h4>
-              <h2>87%</h2>
+
+            <div id="js-plumb-container" class="row">
+
+              <div id="element1" class="team-block" style="top:10px; left: 135px;">Executive Team</div>
+              <div id="element2" class="team-block" style="top:160px; left: 35px;">IT</div>
+              <div id="element2-sub1" class="team-block" style="top:310px; left: 25px;">IT Team 1</div>
+              <div id="element2-sub2" class="team-block" style="top:310px; left: 125px;">IT Team 2</div>
+              <div id="element2" class="team-block" style="top:160px; left: 35px;">IT</div>
+              <div id="element3" class="team-block" style="top:160px; left: 265px;">Financing</div>
+              <div id="element4" class="team-block" style="top:160px; left: 365px;">Marketing</div>
+
+            </div>
+
+          </div>
+
+          <div id="settings-container" class="view-container">
+
+            <div class="row">
+              <h2>Settings</h2>
+              <div class="divider"></div>
+            </div>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="#settings/projects" class="js-link" data-target="#projects-container">Projects</a>
+              </li>
+              <li>
+                <a href="#settings/users" class="js-link" data-target="#users-container">Users</a>
+              </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane active" id="projects-container">
+
+                <h2>Projects</h2>
+
+                <div class="row">
+
+                  <div class="col-md-offset2 col-md-10 col-xs-12">
+
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th colspan="4">Project Name</th>
+                          <th>Budget</th>
+                          <th>Start Date</th>
+                          <th>Active</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="4">Project 1</td>
+                          <td>$36000</td>
+                          <td>1/14/2014</td>
+                          <td colspan="1"><span class="glyphicon glyphicon-check"></span></td>
+                        </tr>
+                        <tr>
+                          <td colspan="4">Project 2</td>
+                          <td>$36000</td>
+                          <td>1/14/2014</td>
+                          <td colspan="1"><span class="glyphicon glyphicon-check"></span></td>
+                        </tr>
+                        <tr>
+                          <td colspan="4">Project 3</td>
+                          <td>$36000</td>
+                          <td>1/14/2014</td>
+                          <td colspan="1"><span class="glyphicon glyphicon-check"></span></td>
+                        </tr>
+                        <tr>
+                          <td colspan="12"><a class="add-new-project js-link">Add New <span class="glyphicon glyphicon-plus"></span></a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+
+                </div>
+              </div>
+              <div class="tab-pane" id="users-container">
+
+                <div class="row">
+                  <h2 class="col-sm-10">Users</h2>
+                  <div class="col-sm-2">
+                    <h5>
+                      <a class="add-user js-link">
+                        <span class="glyphicon glyphicon-plus"></span> <small>Add New User</small>
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+
+                <div class="row">
+
+                  <div class="col-md-11 col-xs-12">
+
+                    <div class="row">
+                      <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                          <img src="/img/300x200.jpg" alt="300X200">
+                          <div class="caption">
+                            <h4>Teammate 1</h4>
+                            <p class="text-muted">info...</p>
+                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                          <img src="/img/300x200.jpg" alt="300X200">
+                          <div class="caption">
+                            <h4>Teammate 2</h4>
+                            <p class="text-muted">info...</p>
+                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                          <img src="/img/300x200.jpg" alt="300X200">
+                          <div class="caption">
+                            <h4>Teammate 3</h4>
+                            <p class="text-muted">info...</p>
+                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                          <img src="/img/300x200.jpg" alt="300X200">
+                          <div class="caption">
+                            <h4>Teammate 4</h4>
+                            <p class="text-muted">info...</p>
+                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                          <img src="/img/300x200.jpg" alt="300X200">
+                          <div class="caption">
+                            <h4>Teammate 5</h4>
+                            <p class="text-muted">info...</p>
+                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="news-container">
+
+            <div class="row">
+              <h2>News</h2>
+              <div class="divider"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-offset-6 col-sm-6">
+                <form class="form-horizontal" role="form">
+                  <div class="form-group pull-right">
+                    <label for="news-filter" class="control-label">Filter</label>
+                    <select id="news-filter" class="form-control">
+                      <option>All</option>
+                      <option>Team #1</option>
+                      <option>Team #2</option>
+                      <option>Project #1</option>
+                      <option>Project #2</option>
+                      <option>Project #3</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-xs-12">
+
+                <div class="list-group">
+                  <a class="list-group-item">
+                    <h4 class="list-group-item-heading">Teammate #5 add a new task to Team 1 from Project 3</h4>
+                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
+                  </a>
+                  <a class="list-group-item">
+                    <h4 class="list-group-item-heading">Teammate #6 added task "Work Faster"</h4>
+                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
+                  </a>
+                  <a class="list-group-item">
+                    <h4 class="list-group-item-heading">Teammate #3 commented on the task "Jump Higher"</h4>
+                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
+                  </a>
+                  <a class="list-group-item">
+                    <h4 class="list-group-item-heading">Team X Deleted</h4>
+                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
+                  </a>
+                  <a class="list-group-item">
+                    <h4 class="list-group-item-heading">Team 2 Created</h4>
+                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
+                  </a>
+                </div>
+
+              </div>
+
             </div>
 
           </div>
@@ -263,7 +557,15 @@
 
 
     <script type="text/javascript" src="/js/jquery-1.11.1.js"></script>
+
     <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/underscore.js"></script>
+    <script type="text/javascript" src="/js/backbone.js"></script>
+    <script type="text/javascript" src="/js/dom.jsPlumb-1.6.2.js"></script>
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="/js/jquery.jqplot.js"></script>
+
+    <script type="text/javascript" src="/js/client-app.js"></script>
 
   </body>
 
