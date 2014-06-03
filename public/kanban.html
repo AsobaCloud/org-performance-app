@@ -237,7 +237,7 @@
             <div class="row">
 
               <div class="col-xs-12 col-sm-offset-2 col-sm-10">
-                <h1>Budget Status <span class="text-danger">$xxx</span></h1>
+                <h1 class="dashboard-budget-ct"><!-- dashboardBudgetTmpl --></h1>
               </div>
 
             </div>
@@ -275,28 +275,7 @@
               <div class="col-xs-12">
 
 
-                <div class="list-group">
-                  <a class="list-group-item">
-                    <h4 class="list-group-item-heading">Teammate #5 add a new task to Team 1 from Project 3</h4>
-                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
-                  </a>
-                  <a class="list-group-item">
-                    <h4 class="list-group-item-heading">Teammate #6 added task "Work Faster"</h4>
-                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
-                  </a>
-                  <a class="list-group-item">
-                    <h4 class="list-group-item-heading">Teammate #3 commented on the task "Jump Higher"</h4>
-                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
-                  </a>
-                  <a class="list-group-item">
-                    <h4 class="list-group-item-heading">Team X Deleted</h4>
-                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
-                  </a>
-                  <a class="list-group-item">
-                    <h4 class="list-group-item-heading">Team 2 Created</h4>
-                    <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pellentesque, purus augue adipiscing est, rhoncus tempor.</p>
-                  </a>
-                </div>
+                <div class="list-group dashboard-news-ct"><!-- dashboardNewsTmpl --></div>
 
 
 
@@ -495,7 +474,7 @@
                           <div class="caption">
                             <h4>Teammate 1</h4>
                             <p class="text-muted">info...</p>
-                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
                           </div>
                         </div>
                       </div>
@@ -506,7 +485,7 @@
                           <div class="caption">
                             <h4>Teammate 2</h4>
                             <p class="text-muted">info...</p>
-                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
                           </div>
                         </div>
                       </div>
@@ -517,7 +496,7 @@
                           <div class="caption">
                             <h4>Teammate 3</h4>
                             <p class="text-muted">info...</p>
-                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
                           </div>
                         </div>
                       </div>
@@ -528,7 +507,7 @@
                           <div class="caption">
                             <h4>Teammate 4</h4>
                             <p class="text-muted">info...</p>
-                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
                           </div>
                         </div>
                       </div>
@@ -539,7 +518,7 @@
                           <div class="caption">
                             <h4>Teammate 5</h4>
                             <p class="text-muted">info...</p>
-                            <p><a href="#" class="btn btn-danger" role="button">Remove User</a></p>
+                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
                           </div>
                         </div>
                       </div>
@@ -559,9 +538,26 @@
 
     </div>
 
+    <!-- templates -->
+    <script id="dashboardBudgetTmpl" type="text/template">
 
+      Budget Status <span class="<%- data.budgetTextClass %>">$<%- data.budgetText %></span>
+
+    </script>
+
+    <script id="dashboardNewsTmpl" type="text/template">
+
+      <% _.each(data, function (story) { %>
+        <a class="list-group-item">
+          <h4 class="list-group-item-heading"><%- story.heading %></h4>
+          <p class="list-group-item-text"><%- story.body %></p>
+        </a>
+      <% }); %>
+
+    </script>
+
+    <!-- libs -->
     <script type="text/javascript" src="/js/jquery-1.11.1.js"></script>
-
     <script type="text/javascript" src="/js/bootstrap.js"></script>
     <script type="text/javascript" src="/js/underscore.js"></script>
     <script type="text/javascript" src="/js/backbone.js"></script>
@@ -569,7 +565,14 @@
     <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="/js/jquery.jqplot.js"></script>
 
+    <!-- init -->
     <script type="text/javascript" src="/js/client-app.js"></script>
+
+    <!-- controllers -->
+    <script type="text/javascript" src="/js/dashboard-view.js"></script>
+
+    <!-- models -->
+    <script type="text/javascript" src="/js/dashboard-model.js"></script>
 
   </body>
 

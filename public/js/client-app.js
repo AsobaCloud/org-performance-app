@@ -1,4 +1,11 @@
+
 (function ($) {
+
+    window.APP = {
+        Views: {},
+        Models: {}
+    };
+
     $(function () {
 
         // single point of connection between css selectors and router
@@ -27,6 +34,8 @@
                 'settings/projects': 'projects'
             }
         };
+
+        var initalizedViews = {};
 
         // construct routes based off of view mappings
         _.each(viewMappings, function (viewSelector, viewName, mappings) {
@@ -59,9 +68,39 @@
             },
 
             dashboard: function () {
-                showView(viewMappings.dashboard)();
+                var $el = showView(viewMappings.dashboard)();
 
-                buildDashboardPlots();
+                if (!initalizedViews.dashboard) {
+                    initalizedViews.dashboard = new window.APP.Views.DashboardView({
+                        el: $el.get(0),
+                        // TODO: connect models to server instead of hard coding
+                        model: new window.APP.Models.DashboardModel({
+                            burnrate: [[1,3,4,7,9]],
+                            resourceutil: [[1,5,6,7.5,8,10]],
+                            budget: -3600.00
+                        }),
+                        newsCollection: new Backbone.Collection([
+                            {
+                                heading: 'Teammate #5 add a new task to Team 1 from Project 3',
+                                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pe'
+                            }, {
+                                heading: 'Teammate #6 added task "Work Faster"',
+                                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pe'
+                            }, {
+                                heading: 'Teammate #3 commented on the task "Jump Higher"',
+                                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pe'
+                            }, {
+                                heading: 'Team X Deleted',
+                                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pe'
+                            }, {
+                                heading: 'Team 2 Created',
+                                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, mi sed viverra pe'
+                            }
+                        ])
+                    });
+                }
+
+                initalizedViews.dashboard.render();
             },
 
             profile: function () {
@@ -156,44 +195,6 @@
 
     })();
 
-    var buildDashboardPlots = (function () {
-        var called;
-        return function () {
-            if (called) { return; }
-            called = true;
-
-            // TODO: move to backbone view and handle resizing, and setup + teardown
-            var options = {
-
-                axes: {
-                    // options for each axis are specified in seperate option objects.
-                    xaxis: {
-                        label: '',
-                        pad: 0,
-                        tickOptions: {
-                            showLabel: false
-                        }
-                    },
-                    yaxis: {
-                        label: '',
-                        tickOptions: {
-                            showLabel: false
-                        }
-                    }
-                }
-            };
-
-            $.jqplot('overall-burn-rate',
-                [[1,3,4,7,9]],
-                _.extend({}, options, {title: 'Burn Rate'})
-            );
-            $.jqplot('overall-resource-util',
-                [[1,5,6,7.5,8,10]],
-                _.extend({}, options, {title: 'Resource Utilization'})
-            );
-        };
-
-    })();
 
     var buildProfilePlots = (function () {
         var called;

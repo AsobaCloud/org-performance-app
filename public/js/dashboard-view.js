@@ -10,25 +10,26 @@
 
         },
 
-        initialize: function () {
+        initialize: function (options) {
             // Must have a model and an element
             if (!this.el) { throw new Error('DashboardView must be instantiated with an element'); }
             if (!this.model) { throw new Error('DashboardView must be instantiated with a model'); }
 
             // attach options
-            this.newsCollection = this.options && this.options.newsCollection;
+            this.newsCollection = options && options.newsCollection;
 
             // select template containers for later
-            this.bugdetCt = this.$('.dashboard-budget-ct');
+            this.budgetCt = this.$('.dashboard-budget-ct');
             this.newsCt = this.$('.dashboard-news-ct');
 
             // attach listeners
+            $(window).on('resize', _.debounce(_.bind(this.drawPlots, this), 200))
         },
 
         render: function () {
 
             this.drawPlots();
-            this.budgetCt.html(this.budgetTemplate(this.model.toJSON()));
+            this.budgetCt.html(this.budgetTemplate(this.model.toCompJSON()));
             
             var news = this.newsCollection && this.newsCollection.toJSON();
             this.newsCt.html(this.newsTemplate(news));
@@ -39,7 +40,7 @@
         remove: function () {
             // Destory the plots and empty their containing elements
             this._setupPlots();
-            
+
             return Backbone.View.prototype.remove.apply(this, arguments);
         },
 
@@ -76,13 +77,13 @@
         },
 
         _drawPlots: function () {
-            var burnRate = [[1,3,4,7,9]];
+            var burnRate = this.model.get('burnrate');
             this.burnRatePlot = $.jqplot('overall-burn-rate',
                 burnRate,
                 _.extend({}, this.plotOptions, {title: 'Burn Rate'})
             );
 
-            var resource = [[1,5,6,7.5,8,10]];
+            var resource = this.model.get('resourceutil');
             this.resourcePlot = $.jqplot('overall-resource-util',
                 resource,
                 _.extend({}, this.plotOptions, {title: 'Resource Utilization'})
