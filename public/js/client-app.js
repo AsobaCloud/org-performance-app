@@ -7,8 +7,7 @@
             orgchart: '#orgchart-container',
             settings: '#settings-container',
             dashboard: '#dashboard-container',
-            profile: '#profile-container',
-            news: '#news-container'
+            profile: '#profile-container'
         }
 
         var allViewSelector = _.map(viewMappings, function (selector) { return selector; }).join(',');
@@ -80,6 +79,11 @@
             // calls Event#preventDefault and that messes up the Backbone routing
             $(this).tab('show');
         });
+
+        // TODO: this is view code, just here as a reminder
+        $('#news-filter').on('change', function (e) {
+            console.log('news filter is ' + $(this).val())
+        })
 
 
         new MainRouter();
