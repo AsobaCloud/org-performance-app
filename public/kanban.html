@@ -371,17 +371,7 @@
               <div class="divider"></div>
             </div>
 
-            <div id="js-plumb-container" class="row">
-
-              <div id="element1" class="team-block" style="top:10px; left: 135px;">Executive Team</div>
-              <div id="element2" class="team-block" style="top:160px; left: 35px;">IT</div>
-              <div id="element2-sub1" class="team-block" style="top:310px; left: 25px;">IT Team 1</div>
-              <div id="element2-sub2" class="team-block" style="top:310px; left: 125px;">IT Team 2</div>
-              <div id="element2" class="team-block" style="top:160px; left: 35px;">IT</div>
-              <div id="element3" class="team-block" style="top:160px; left: 265px;">Financing</div>
-              <div id="element4" class="team-block" style="top:160px; left: 365px;">Marketing</div>
-
-            </div>
+            <div class="row js-plumb-container"><!-- orgChartTmpl --></div>
 
           </div>
 
@@ -556,6 +546,17 @@
 
     </script>
 
+    <script id="orgChartTmpl" type="text/template">
+
+      <% _.each(data, function (team) { if (team.cid) { %>
+        <div id="nodeid-<%- team.cid %>" class="team-block" style="top: <%- team.y %>px; left: <%- team.x %>px;">
+          <%- team.name %>
+        </div>
+      <% } }); %>
+     
+    </script>
+
+
     <!-- libs -->
     <script type="text/javascript" src="/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="/js/bootstrap.js"></script>
@@ -570,9 +571,12 @@
 
     <!-- controllers -->
     <script type="text/javascript" src="/js/dashboard-view.js"></script>
+    <script type="text/javascript" src="/js/org-chart-view.js"></script>
 
     <!-- models -->
     <script type="text/javascript" src="/js/dashboard-model.js"></script>
+    <script type="text/javascript" src="/js/team-model.js"></script>
+    <script type="text/javascript" src="/js/team-collection.js"></script>
 
   </body>
 

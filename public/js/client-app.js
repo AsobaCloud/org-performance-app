@@ -48,11 +48,56 @@
                 // redirect to dashboard
                 this.navigate('/dashboard', {trigger: true});
             },
-            // TODO: we are going to want to do this with specific data, i.e. with the id of model(s)
+
             orgchart: function () {
-                showView(viewMappings.orgchart)();
-                // TODO: this will be handled by BB View, e.g. needs teardown
-                buildOrgChart();
+                var $el = showView(viewMappings.orgchart)();
+
+                if (!initalizedViews.orgchart) {
+                    initalizedViews.orgchart = new window.APP.Views.OrgChartView({
+                        el: $el.get(0),
+                        collection: new window.APP.Models.TeamCollection([
+                            {
+                                name: 'Executive Team',
+                                id: 12345670, // Fake the ids until server is done
+                                y: 10,
+                                x: 150,
+                                contains: ['12345675', '12345673', '12345674']
+                            }, {
+                                name: 'IT',
+                                id: 12345675, // Fake the ids until server is done
+                                y: 160,
+                                x: 75,
+                                contains: ['12345671', '12345672']
+                            }, {
+                                name: 'IT Team 1',
+                                id: 12345671, // Fake the ids until server is done
+                                y: 310,
+                                x: 25,
+                                contains: []
+                            }, {
+                                name: 'IT Team 2',
+                                id: 12345672, // Fake the ids until server is done
+                                y: 310,
+                                x: 125,
+                                contains: []
+                            }, {
+                                name: 'Financing',
+                                id: 12345673, // Fake the ids until server is done
+                                y: 160,
+                                x: 265,
+                                contains: []
+                            }, {
+                                name: 'Marketing',
+                                id: 12345674, // Fake the ids until server is done
+                                y: 160,
+                                x: 365,
+                                contains: []
+                            }
+                        ])
+                    });
+                }
+
+                initalizedViews.orgchart.render();
             },
 
             projects: function () {
@@ -131,69 +176,7 @@
 
     });
 
-    var buildOrgChart = (function () {
-        var called;
-        return function () {
-            if (called) { return; }
-            called = true;
-
-            jsPlumb.ready(function() {
-
-                var orgchart = jsPlumb.getInstance({
-                    conatainer: '#js-plumb-container',
-                    MaxConnections: 10,
-                    Connector: 'Flowchart'
-                });
-
-                var commonBottom = {
-                    isSource: true,
-                    isTarget: false,
-                    anchor: 'BottomCenter'
-                };
-
-                var commonTop = {
-                    isSource: false,
-                    isTarget: true,
-                    anchor: 'TopCenter'
-                };
-
-                var executiveTeam = orgchart.addEndpoint('element1', commonBottom);
-
-                var itTeam = orgchart.addEndpoints('element2', [commonTop, commonBottom]);
-                var itTeam1 = orgchart.addEndpoints('element2-sub1', [commonTop, commonBottom]);
-                var itTeam2 = orgchart.addEndpoints('element2-sub2', [commonTop, commonBottom]);
-
-                var financingTeam = orgchart.addEndpoints('element3', [commonTop, commonBottom]);
-                var marketingTeam = orgchart.addEndpoints('element4', [commonTop, commonBottom]);
-
-                orgchart.connect({
-                    source: executiveTeam,
-                    target: itTeam[0]
-                });
-                orgchart.connect({
-                    source: itTeam[1],
-                    target: itTeam1[0],
-                });
-                orgchart.connect({
-                    source: itTeam[1],
-                    target: itTeam2[0],
-                });
-                
-
-                orgchart.connect({
-                    source: executiveTeam,
-                    target: marketingTeam[0]
-                });
-
-                orgchart.connect({
-                    source: executiveTeam,
-                    target: financingTeam[0]
-                });
-
-            });
-        };
-
-    })();
+    
 
 
     var buildProfilePlots = (function () {
