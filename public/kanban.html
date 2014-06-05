@@ -115,10 +115,8 @@
               <div id="profile-burn-rate" class="col-sm-6 chart"></div>
               <div class="col-sm-5">
                 <h3>Tasks in Progress</h3>
-                <ul class="list-group">
-                  <li class="list-group-item">Task 1</li>
-                  <li class="list-group-item">Task 2</li>
-                  <li class="list-group-item">Task 3</li>
+                <ul class="list-group task-working">
+                  <!-- profileTaskTmpl -->
                 </ul>
               </div>
 
@@ -129,10 +127,8 @@
               <div id="profile-resource-util" class="col-sm-6 chart"></div>
               <div class="col-sm-5">
                 <h3>Completed Tasks</h3>
-                <ul class="list-group">
-                  <li class="list-group-item">Task 1</li>
-                  <li class="list-group-item">Task 2</li>
-                  <li class="list-group-item">Task 3</li>
+                <ul class="list-group task-complete">
+                  <!-- profileTaskTmpl -->
                 </ul>
               </div>
 
@@ -509,13 +505,21 @@
               <img src="/img/300x200.jpg" alt="300X200">
               <div class="caption">
                 <h4 class="text-ellipsis" title="<%- user.name %>"><%- user.name %></h4>
-                <p class="text-muted text-ellipsis user-description" title="<%- user.description %>"><%- user.description %></p>
+                <p class="text-muted text-ellipsis user-description" title="<%- user.description %>">
+                  <%- user.description %>
+                </p>
                 <p><a class="js-link btn btn-danger" data-userid="<%- user.id %>" role="button">Remove User</a></p>
               </div>
             </div>
           </div>
 
       <% }); %>
+
+    </script>
+
+    <script id="profileTaskTmpl" type="text/template">
+
+        <li class="list-group-item"><%- data.title %></li>
 
     </script>
 
@@ -539,6 +543,7 @@
     <script type="text/javascript" src="/js/controllers/kanban-view.js"></script>
     <script type="text/javascript" src="/js/controllers/sidebar-kanban-view.js"></script>
     <script type="text/javascript" src="/js/controllers/settings-view.js"></script>
+    <script type="text/javascript" src="/js/controllers/profile-view.js"></script>
 
     <!-- models -->
     <script type="text/javascript" src="/js/models/dashboard.js"></script>

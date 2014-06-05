@@ -11,26 +11,31 @@
         // TODO: Create users model and collection
         var userCollection = new Backbone.Collection([
             {
+                id: 1231,
                 name: 'Teammate 1',
-                description: 'Cats are the Best!'
-            },
-            {
+                description: 'Cats are the Best!',
+                cards: [1234, 1233, 1231, 1232]
+            }, {
+                id: 1232,
                 name: 'Teammate 2',
                 description: 'Run anywhere cloud Platform as a Service, SoMoLo...'
             }, {
+                id: 1233,
                 name: 'Teammate 3',
                 description: 'I think it\'s a bit more runny than you like it' 
             }, {
+                id: 1234,
                 name: 'Teammate 4',
                 description: '... then you go and totally redeem yourself!'
             }, {
+                id: 1235,
                 name: 'Teammate 5',
                 description: ''
             }
         ]);
 
         // TODO: Create card model and colletion
-        var cards = [
+        var cards = new Backbone.Collection([
             {
                 title: 'Do stuff...',
                 status: 'pending',
@@ -48,7 +53,7 @@
                 status: 'done',
                 id: 1233
             }
-        ];
+        ]);
 
         var teamCollection = new window.APP.Models.TeamCollection([
             {
@@ -68,28 +73,28 @@
                 id: 12345671, // Fake the ids until server is done
                 y: 310,
                 x: 25,
-                cards: cards,
+                cards: cards.toJSON(), // TODO: sync with cards collection
                 members: userCollection.toJSON() // TODO: sync with users collection
             }, {
                 name: 'IT Team 2',
                 id: 12345672, // Fake the ids until server is done
                 y: 310,
                 x: 125,
-                cards: cards,
+                cards: cards.toJSON(), // TODO: sync with cards collection
                 members: userCollection.toJSON() // TODO: sync with users collection
             }, {
                 name: 'Financing',
                 id: 12345673, // Fake the ids until server is done
                 y: 160,
                 x: 265,
-                cards: cards,
+                cards: cards.toJSON(), // TODO: sync with cards collection
                 members: userCollection.toJSON() // TODO: sync with users collection
             }, {
                 name: 'Marketing',
                 id: 12345674, // Fake the ids until server is done
                 y: 160,
                 x: 365,
-                cards: cards,
+                cards: cards.toJSON(), // TODO: sync with cards collection
                 members: userCollection.toJSON() // TODO: sync with users collection
             }
         ]);
@@ -264,9 +269,25 @@
             },
 
             profile: function () {
-                showView(viewMappings.profile)();
+                var $el = showView(viewMappings.profile)();
 
-                buildProfilePlots();
+                if (!initalizedViews.profile) {
+                    // TODO: the user should have a specific model for their profile, potentially
+                    //       containing data that isn't available to the public user's collection
+                    var user = new Backbone.Model(_.extend(userCollection.first().toJSON(), {
+                        burnrate: [[1,3,4,7,9]],
+                        resourceutil: [[6,5,6,7.5,8,10]]
+                    }));
+
+                    initalizedViews.profile = new window.APP.Views.ProfileView({
+                        el: $el.get(0),
+                        model: user,
+                        cardCollection: cards
+                    });
+                }
+
+                // return the element so sub view routes can use it
+                return initalizedViews.profile.render();
             }
 
         }));
@@ -290,47 +311,5 @@
         Backbone.history.start();
 
     });
-
-    
-
-
-    var buildProfilePlots = (function () {
-        var called;
-        return function () {
-            if (called) { return; }
-            called = true;
-
-            // TODO: move to backbone view and handle resizing, and setup + teardown
-            var options = {
-
-                axes: {
-                    // options for each axis are specified in seperate option objects.
-                    xaxis: {
-                        label: '',
-                        pad: 0,
-                        tickOptions: {
-                            showLabel: false
-                        }
-                    },
-                    yaxis: {
-                        label: '',
-                        tickOptions: {
-                            showLabel: false
-                        }
-                    }
-                }
-            };
-
-            $.jqplot('profile-burn-rate',
-                [[1,3,4,7,9]],
-                _.extend({}, options, {title: 'Burn Rate'})
-            );
-            $.jqplot('profile-resource-util',
-                [[1,5,6,7.5,8,10]],
-                _.extend({}, options, {title: 'Utilization'})
-            );
-        };
-
-    })();
 
 })(jQuery);
