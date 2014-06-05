@@ -365,64 +365,7 @@
                 <div class="row">
 
                   <div class="col-md-11 col-xs-12">
-
-                    <div class="row">
-                      <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                          <img src="/img/300x200.jpg" alt="300X200">
-                          <div class="caption">
-                            <h4>Teammate 1</h4>
-                            <p class="text-muted">info...</p>
-                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                          <img src="/img/300x200.jpg" alt="300X200">
-                          <div class="caption">
-                            <h4>Teammate 2</h4>
-                            <p class="text-muted">info...</p>
-                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                          <img src="/img/300x200.jpg" alt="300X200">
-                          <div class="caption">
-                            <h4>Teammate 3</h4>
-                            <p class="text-muted">info...</p>
-                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                          <img src="/img/300x200.jpg" alt="300X200">
-                          <div class="caption">
-                            <h4>Teammate 4</h4>
-                            <p class="text-muted">info...</p>
-                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                          <img src="/img/300x200.jpg" alt="300X200">
-                          <div class="caption">
-                            <h4>Teammate 5</h4>
-                            <p class="text-muted">info...</p>
-                            <p><a class="js-link btn btn-danger" role="button">Remove User</a></p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
+                    <div class="row settings-user-ct"><!-- settingsUserTmpl --></div>
                   </div>
 
                 </div>
@@ -553,6 +496,25 @@
             <% } %>
           </td>
         </tr>
+      <% }); %>
+
+    </script>
+
+    <script id="settingsUserTmpl" type="text/template">
+
+      <% _.each(data, function (user) { %>
+
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+              <img src="/img/300x200.jpg" alt="300X200">
+              <div class="caption">
+                <h4 class="text-ellipsis" title="<%- user.name %>"><%- user.name %></h4>
+                <p class="text-muted text-ellipsis user-description" title="<%- user.description %>"><%- user.description %></p>
+                <p><a class="js-link btn btn-danger" data-userid="<%- user.id %>" role="button">Remove User</a></p>
+              </div>
+            </div>
+          </div>
+
       <% }); %>
 
     </script>

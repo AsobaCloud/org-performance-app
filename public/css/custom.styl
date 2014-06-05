@@ -1,6 +1,17 @@
 footerHeight = 150px
 footerPaddingTop = 20px
 
+wordBreak()
+  word-break break-all
+  word-wrap break-word
+  white-space nowrap
+
+overflowEllipsis()
+  overflow hidden
+  text-overflow ellipsis
+  -o-text-overflow ellipsis
+
+
 html, body
   height: 100%;
 
@@ -34,6 +45,15 @@ html, body
 
 .main-content
   height 100%
+
+.settings-user-ct
+  .thumbnail
+    .caption
+      wordBreak()
+    .text-ellipsis
+      overflowEllipsis()
+    .user-description
+      height 20px
 
 /* sidebar */
 #collapseKanban
@@ -87,7 +107,7 @@ html, body
 .alert-no-model
   display none
 
-/* addons */
+/* helpers */
 .js-link
   cursor hand
   cursor pointer

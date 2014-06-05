@@ -9,14 +9,25 @@
     $(function () {
 
         // TODO: Create users model and collection
-        var users = [
+        var userCollection = new Backbone.Collection([
             {
-                name: 'Teammate 1'
+                name: 'Teammate 1',
+                description: 'Cats are the Best!'
             },
             {
-                name: 'Teammate 2'
+                name: 'Teammate 2',
+                description: 'Run anywhere cloud Platform as a Service, SoMoLo...'
+            }, {
+                name: 'Teammate 3',
+                description: 'I think it\'s a bit more runny than you like it' 
+            }, {
+                name: 'Teammate 4',
+                description: '... then you go and totally redeem yourself!'
+            }, {
+                name: 'Teammate 5',
+                description: ''
             }
-        ];
+        ]);
 
         // TODO: Create card model and colletion
         var cards = [
@@ -58,35 +69,35 @@
                 y: 310,
                 x: 25,
                 cards: cards,
-                members: users // TODO: sync with users collection
+                members: userCollection.toJSON() // TODO: sync with users collection
             }, {
                 name: 'IT Team 2',
                 id: 12345672, // Fake the ids until server is done
                 y: 310,
                 x: 125,
                 cards: cards,
-                members: users // TODO: sync with users collection
+                members: userCollection.toJSON() // TODO: sync with users collection
             }, {
                 name: 'Financing',
                 id: 12345673, // Fake the ids until server is done
                 y: 160,
                 x: 265,
                 cards: cards,
-                members: users // TODO: sync with users collection
+                members: userCollection.toJSON() // TODO: sync with users collection
             }, {
                 name: 'Marketing',
                 id: 12345674, // Fake the ids until server is done
                 y: 160,
                 x: 365,
                 cards: cards,
-                members: users // TODO: sync with users collection
+                members: userCollection.toJSON() // TODO: sync with users collection
             }
         ]);
 
         // TODO: create projects colleciton
         var projectCollection = new window.APP.Models.ProjectCollection([
             {
-                name: 'Project 3',
+                name: 'Project 1',
                 startDate: moment().subtract(10, 'days').toDate(),
                 active: true
             }, {
@@ -94,11 +105,11 @@
                 startDate: moment().subtract(1, 'day').toDate(),
                 active: true
             }, {
-                name: 'Project 1',
+                name: 'Project 3',
                 startDate: moment().add(1, 'day').toDate(),
                 active: false
             }, {
-                name: 'Project 1',
+                name: 'Project 4',
                 startDate: moment().add(5, 'days').toDate(),
                 active: false
             }
@@ -176,7 +187,8 @@
                 if (!initalizedViews.settings) {
                     initalizedViews.settings = new window.APP.Views.SettingsView({
                         el: $el.get(0),
-                        projectCollection: projectCollection
+                        projectCollection: projectCollection,
+                        userCollection: userCollection
                     });
                 }
 
