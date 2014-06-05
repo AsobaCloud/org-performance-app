@@ -76,94 +76,14 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <!-- TODO: what to show when top level is clicked -->
                   <a class="js-link" data-toggle="collapse" data-parent="#accordion" data-target="#collapseKanban">
-                    Kanban
+                    Kanban <span class="caret"></span>
                   </a>
                 </h4>
               </div>
 
               <div id="collapseKanban" class="panel-collapse collapse">
-                <div class="panel-body">
-
-                  <div class="panel-group" id="kanbanAccordion">
-
-                    <div class="panel panel-default">
-                      
-                      <div class="panel-heading">
-                        <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="#kanbanAccordion" href="#collapse1">
-                            Team #1
-                          </a>
-                        </h4>
-                      </div>
-
-                      <div id="collapse1" class="panel-collapse collapse">
-                        <div class="panel-body">
-                          <div class="panel-group" id="subAccordion1">
-                            <div class="panel panel-default">
-
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#subAccordion1" data-target="#innerCollapse1" href="#kanban">
-                                    Sub-Team #1
-                                  </a>
-                                </h4>
-                              </div>
-
-                              <div id="innerCollapse1" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                  <p>Team member #1</p>
-                                  <p>Team member #2</p>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#subAccordion1" data-target="#innerCollapse2" href="#kanban">
-                                    Sub-Team #2
-                                  </a>
-                                </h4>
-                              </div>
-
-                              <div id="innerCollapse2" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                  <p>Team member #1</p>
-                                  <p>Team member #2</p>
-                                </div>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
-                    <div class="panel panel-default">
-                      
-                      <div class="panel-heading">
-                        <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="#kanbanAccordion" data-target="#collapse2" href="#kanban">
-                            Team #2
-                          </a>
-                        </h4>
-                      </div>
-
-                      <div id="collapse2" class="panel-collapse collapse">
-                        <div class="panel-body">
-                          <p>Team member #1</p>
-                          <p>Team member #2</p>
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </div>
+                <!-- sidebarKanbanTmpl -->
               </div>
 
             </div>
@@ -287,8 +207,11 @@
 
           <div id="kanban-container" class="view-container">
 
+            <div class="alert alert-danger alert-no-model">Can't find that project, sorry Charlie...</div>
             <div class="row">
-              <h2 class="text-center text-primary">Team Work Tracking</h2>
+              <h2 class="text-center text-primary kanban-teamname-ct">
+                <!-- kanbanTeamnameTmpl -->
+              </h2>
             </div>
 
             <div class="row kanban-content">
@@ -299,6 +222,8 @@
                   <h4 class="text-center">Backlog</h4>
                 </div>
 
+                <div class="kanban-backlog-ct"></div>
+
               </div>
 
               <div class="col-xs-2 pending-ct kanban-list">
@@ -306,6 +231,8 @@
                 <div>
                   <h4 class="text-center">Pending</h4>
                 </div>
+
+                <div class="kanban-pending-ct"></div>
 
               </div>
 
@@ -315,9 +242,7 @@
                   <h4 class="text-center">Doing</h4>
                 </div>
 
-                <div class="kanban-card">
-                  <p class="kanban-card-title text-center text-info">Card Title</p>
-                </div>
+                <div class="kanban-doing-ct"></div>
 
               </div>
 
@@ -327,6 +252,8 @@
                   <h4 class="text-center">Blocked</h4>
                 </div>
 
+                <div class="kanban-blocked-ct"></div>
+
               </div>
 
               <div class="col-xs-2 done-ct kanban-list">
@@ -334,6 +261,8 @@
                 <div class=" ">
                   <h4 class="text-center">Done</h4>
                 </div>
+
+                <div class="kanban-done-ct"></div>
 
               </div>
 
@@ -553,7 +482,80 @@
           <%- team.name %>
         </div>
       <% } }); %>
-     
+
+    </script>
+
+    <script id="kanbanTeamnameTmpl" type="text/template">
+
+      <%- data.name %> Work Tracking
+
+    </script>
+
+    <script id="kanbanCardTmpl" type="text/template">
+
+      <div class="kanban-card">
+        <p class="kanban-card-title text-center text-info"><%- data.title %></p>
+      </div>
+
+    </script>
+
+    <script id="sidebarKanbanTmpl" type="text/template">
+
+      <% _.each(data, function (team) { %>
+        <div class="panel-body">
+          <div class="panel-group" id="sidebar-teamid-<%- team.id %>">
+
+            <div class="panel panel-default">
+              
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  
+                  <% if (team.contains && team.contains.length) { %>
+                    <a class="js-link" data-toggle="collapse" data-parent="#sidebar-teamid-<%- team.id %>" data-target="#sidebar-teamid-<%- team.id %>-ct">
+                      <%- team.name %> <span class="caret"></span>
+                    </a>
+                  <% } else { %>
+                    <a href="#kanban/<%- team.id %>" data-toggle="collapse" data-parent="#sidebar-teamid-<%- team.id %>" data-target="#sidebar-teamid-<%- team.id %>-ct">
+                      <%- team.name %>
+                      <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                  <% } %>
+
+                </h4>
+              </div>
+
+                  <% 
+                  if (team.contains && team.contains.length) {
+                  %>
+                    <div id="sidebar-teamid-<%- team.id %>-ct" class="panel-collapse collapse">
+                  <%
+                    // recurse through each contained team
+                    print(_.template($('#sidebarKanbanTmpl').html(), team.contains, {variable: 'data'}));
+                  %>
+                    </div>
+                  <%
+                  } else if (team.members) {
+                    // if members exist it doesn't contain any teams
+                  %>
+
+                    <div class="panel-body">
+
+                      <% _.each(team.members, function (teammate) { %>
+                        <p><%- teammate.name %></p>
+                      <% }); %>
+
+                    </div>
+
+                  <%
+                  }
+                  %>
+
+            </div>
+
+          </div>
+        </div>
+      <% }); %>
+
     </script>
 
 
@@ -572,6 +574,8 @@
     <!-- controllers -->
     <script type="text/javascript" src="/js/controllers/dashboard-view.js"></script>
     <script type="text/javascript" src="/js/controllers/org-chart-view.js"></script>
+    <script type="text/javascript" src="/js/controllers/kanban-view.js"></script>
+    <script type="text/javascript" src="/js/controllers/sidebar-kanban-view.js"></script>
 
     <!-- models -->
     <script type="text/javascript" src="/js/models/dashboard-model.js"></script>

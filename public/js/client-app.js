@@ -8,6 +8,88 @@
 
     $(function () {
 
+        // TODO: Create users model and collection
+        var users = [
+            {
+                name: 'Teammate 1'
+            },
+            {
+                name: 'Teammate 2'
+            }
+        ];
+
+        // TODO: Create card model and colletion
+        var cards = [
+            {
+                title: 'Do stuff...',
+                status: 'pending',
+                id: 1234
+            }, {
+                title: 'Foo',
+                status: 'doing',
+                id: 1231
+            }, {
+                title: 'Bar',
+                status: 'doing',
+                id: 1232
+            }, {
+                title: 'Baz',
+                status: 'done',
+                id: 1233
+            }
+        ];
+
+        var teamCollection = new window.APP.Models.TeamCollection([
+            {
+                name: 'Executive Team',
+                id: 12345670, // Fake the ids until server is done
+                y: 10,
+                x: 150,
+                contains: ['12345675', '12345673', '12345674']
+            }, {
+                name: 'IT',
+                id: 12345675, // Fake the ids until server is done
+                y: 160,
+                x: 75,
+                contains: ['12345671', '12345672']
+            }, {
+                name: 'IT Team 1',
+                id: 12345671, // Fake the ids until server is done
+                y: 310,
+                x: 25,
+                cards: cards,
+                members: users // TODO: sync with users collection
+            }, {
+                name: 'IT Team 2',
+                id: 12345672, // Fake the ids until server is done
+                y: 310,
+                x: 125,
+                cards: cards,
+                members: users // TODO: sync with users collection
+            }, {
+                name: 'Financing',
+                id: 12345673, // Fake the ids until server is done
+                y: 160,
+                x: 265,
+                cards: cards,
+                members: users // TODO: sync with users collection
+            }, {
+                name: 'Marketing',
+                id: 12345674, // Fake the ids until server is done
+                y: 160,
+                x: 365,
+                cards: cards,
+                members: users // TODO: sync with users collection
+            }
+        ]);
+
+        var sidebarKanbanView = new window.APP.Views.SidebarKanbanView({
+            el: $('#collapseKanban').get(0),
+            collection: teamCollection
+        });
+
+        sidebarKanbanView.render();
+
         // single point of connection between css selectors and router
         var viewMappings = {
             kanban: '#kanban-container',
@@ -23,6 +105,9 @@
             return function () {
                 // hide current view
                 $(allViewSelector).hide();
+                // hide any alerts shown by previously active views
+                $('.alert-no-model').hide()
+                // show the view
                 return $(selector).show();
             };
         };
@@ -30,6 +115,7 @@
         var routerOptions = {
             routes: {
                 '': 'home',
+                'kanban/:id': 'kanban',
                 'settings/users': 'users',
                 'settings/projects': 'projects'
             }
@@ -55,45 +141,7 @@
                 if (!initalizedViews.orgchart) {
                     initalizedViews.orgchart = new window.APP.Views.OrgChartView({
                         el: $el.get(0),
-                        collection: new window.APP.Models.TeamCollection([
-                            {
-                                name: 'Executive Team',
-                                id: 12345670, // Fake the ids until server is done
-                                y: 10,
-                                x: 150,
-                                contains: ['12345675', '12345673', '12345674']
-                            }, {
-                                name: 'IT',
-                                id: 12345675, // Fake the ids until server is done
-                                y: 160,
-                                x: 75,
-                                contains: ['12345671', '12345672']
-                            }, {
-                                name: 'IT Team 1',
-                                id: 12345671, // Fake the ids until server is done
-                                y: 310,
-                                x: 25,
-                                contains: []
-                            }, {
-                                name: 'IT Team 2',
-                                id: 12345672, // Fake the ids until server is done
-                                y: 310,
-                                x: 125,
-                                contains: []
-                            }, {
-                                name: 'Financing',
-                                id: 12345673, // Fake the ids until server is done
-                                y: 160,
-                                x: 265,
-                                contains: []
-                            }, {
-                                name: 'Marketing',
-                                id: 12345674, // Fake the ids until server is done
-                                y: 160,
-                                x: 365,
-                                contains: []
-                            }
-                        ])
+                        collection: teamCollection
                     });
                 }
 
@@ -146,6 +194,25 @@
                 }
 
                 initalizedViews.dashboard.render();
+            },
+
+            kanban: function (teamid) {
+                var $el = showView(viewMappings.kanban)();
+
+                // TODO: replace this with ajax call to get the team's kanban board
+                var model = teamCollection.get(teamid);
+                if (!model) {
+                    return $el.find('.alert-no-model').fadeIn();
+                }
+
+                initalizedViews.kanban && initalizedViews.kanban.remove();
+
+                initalizedViews.kanban = new window.APP.Views.KanbanView({
+                    el: $el.get(0),
+                    model: model
+                });
+
+                initalizedViews.kanban.render();
             },
 
             profile: function () {
