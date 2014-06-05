@@ -1,7 +1,7 @@
 
 (function () {
 
-    window.APP.Models.TeamModel = Backbone.Model.extend({
+    window.APP.Models.ProjectModel = Backbone.Model.extend({
 
         initialize: function (raw, options) {
             // Initialize the virtual attributes with the correct context
@@ -29,12 +29,20 @@
             var self = this;
             return {
 
-                cid: function () {
-                    return self.cid;
+                formattedStartDate: function () {
+                    var formatted = self.get('startDate');
+
+                    return formatted ? moment(formatted).format('l') : '';
                 }
 
             };
         }
+
+    });
+    
+    window.APP.Models.ProjectCollection = Backbone.Collection.extend({
+
+        model: window.APP.Models.ProjectModel
 
     });
 

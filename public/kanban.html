@@ -340,28 +340,8 @@
                           <th>Active</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="4">Project 1</td>
-                          <td>$36000</td>
-                          <td>1/14/2014</td>
-                          <td colspan="1"><span class="glyphicon glyphicon-check"></span></td>
-                        </tr>
-                        <tr>
-                          <td colspan="4">Project 2</td>
-                          <td>$36000</td>
-                          <td>1/14/2014</td>
-                          <td colspan="1"><span class="glyphicon glyphicon-check"></span></td>
-                        </tr>
-                        <tr>
-                          <td colspan="4">Project 3</td>
-                          <td>$36000</td>
-                          <td>1/14/2014</td>
-                          <td colspan="1"><span class="glyphicon glyphicon-check"></span></td>
-                        </tr>
-                        <tr>
-                          <td colspan="12"><a class="add-new-project js-link">Add New <span class="glyphicon glyphicon-plus"></span></a></td>
-                        </tr>
+                      <tbody class="settings-project-ct">
+                        <!-- settingsProjectTmpl -->
                       </tbody>
                     </table>
 
@@ -558,6 +538,23 @@
 
     </script>
 
+    <script id="setttingsProjectTmpl" type="text/template">
+
+      <tr>
+        <td colspan="4"><%- data.name %></td>
+        <td>$<%- data.budget %></td>
+        <td><%- data.formatedStartDate %></td>
+        <td colspan="1">
+          <% if (data.active) { %>
+            <span class="glyphicon glyphicon-circle-ok"></span>
+          <% } else { %>
+            <span class="glyphicon glyphicon-circle-ban"></span>
+          <% } %>
+        </td>
+      </tr>
+
+    </script>
+
 
     <!-- libs -->
     <script type="text/javascript" src="/js/libs/jquery-1.11.1.js"></script>
@@ -565,6 +562,7 @@
     <script type="text/javascript" src="/js/libs/underscore.js"></script>
     <script type="text/javascript" src="/js/libs/backbone.js"></script>
     <script type="text/javascript" src="/js/libs/dom.jsPlumb-1.6.2.js"></script>
+    <script type="text/javascript" src="/js/libs/moment.min.js"></script>
     <!--[if lt IE 9]><script language="javascript" type="text/libs/javascript" src="excanvas.js"></script><![endif]-->
     <script type="text/javascript" src="/js/libs/jquery.jqplot.js"></script>
 
@@ -579,8 +577,8 @@
 
     <!-- models -->
     <script type="text/javascript" src="/js/models/dashboard-model.js"></script>
-    <script type="text/javascript" src="/js/models/team-model.js"></script>
-    <script type="text/javascript" src="/js/models/team-collection.js"></script>
+    <script type="text/javascript" src="/js/models/team.js"></script>
+    <script type="text/javascript" src="/js/models/project.js"></script>
 
   </body>
 
