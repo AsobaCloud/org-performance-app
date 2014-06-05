@@ -540,18 +540,20 @@
 
     <script id="setttingsProjectTmpl" type="text/template">
 
-      <tr>
-        <td colspan="4"><%- data.name %></td>
-        <td>$<%- data.budget %></td>
-        <td><%- data.formatedStartDate %></td>
-        <td colspan="1">
-          <% if (data.active) { %>
-            <span class="glyphicon glyphicon-circle-ok"></span>
-          <% } else { %>
-            <span class="glyphicon glyphicon-circle-ban"></span>
-          <% } %>
-        </td>
-      </tr>
+      <% _.each(data, function (project) { %>
+        <tr>
+          <td colspan="4"><%- project.name %></td>
+          <td>$<%- project.budget %></td>
+          <td><%- project.formattedStartDate %></td>
+          <td colspan="1">
+            <% if (project.active) { %>
+              <span class="glyphicon glyphicon-ok-circle"></span>
+            <% } else { %>
+              <span class="glyphicon glyphicon-ban-circle"></span>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
 
     </script>
 
@@ -574,9 +576,10 @@
     <script type="text/javascript" src="/js/controllers/org-chart-view.js"></script>
     <script type="text/javascript" src="/js/controllers/kanban-view.js"></script>
     <script type="text/javascript" src="/js/controllers/sidebar-kanban-view.js"></script>
+    <script type="text/javascript" src="/js/controllers/settings-view.js"></script>
 
     <!-- models -->
-    <script type="text/javascript" src="/js/models/dashboard-model.js"></script>
+    <script type="text/javascript" src="/js/models/dashboard.js"></script>
     <script type="text/javascript" src="/js/models/team.js"></script>
     <script type="text/javascript" src="/js/models/project.js"></script>
 

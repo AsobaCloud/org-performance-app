@@ -42,7 +42,11 @@
     
     window.APP.Models.ProjectCollection = Backbone.Collection.extend({
 
-        model: window.APP.Models.ProjectModel
+        model: window.APP.Models.ProjectModel,
+
+        toCompJSON: function (options) {
+            return this.map(function(model){ return model.toCompJSON(options); });
+        }
 
     });
 

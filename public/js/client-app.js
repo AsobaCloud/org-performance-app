@@ -83,6 +83,28 @@
             }
         ]);
 
+        // TODO: create projects colleciton
+        var projectCollection = new window.APP.Models.ProjectCollection([
+            {
+                name: 'Project 3',
+                startDate: moment().subtract(10, 'days').toDate(),
+                active: true
+            }, {
+                name: 'Project 2',
+                startDate: moment().subtract(1, 'day').toDate(),
+                active: true
+            }, {
+                name: 'Project 1',
+                startDate: moment().add(1, 'day').toDate(),
+                active: false
+            }, {
+                name: 'Project 1',
+                startDate: moment().add(5, 'days').toDate(),
+                active: false
+            }
+        ]);
+
+        // Build the sidebar on init
         var sidebarKanbanView = new window.APP.Views.SidebarKanbanView({
             el: $('#collapseKanban').get(0),
             collection: teamCollection
@@ -148,14 +170,28 @@
                 initalizedViews.orgchart.render();
             },
 
+            settings: function () {
+                var $el = showView(viewMappings.settings)();
+
+                if (!initalizedViews.settings) {
+                    initalizedViews.settings = new window.APP.Views.SettingsView({
+                        el: $el.get(0),
+                        projectCollection: projectCollection
+                    });
+                }
+
+                // return the element so sub view routes can use it
+                return initalizedViews.settings.render().$el;
+            },
+
             projects: function () {
-                showView(viewMappings.settings)()
+                this.settings()
                     .find('.nav-tabs [data-target="#projects-container"]')
                     .tab('show');
             },
 
             users: function () {
-                showView(viewMappings.settings)()
+                this.settings()
                     .find('.nav-tabs [data-target="#users-container"]')
                     .tab('show');
             },
