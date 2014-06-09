@@ -292,10 +292,26 @@
           <div id="orgchart-container" class="view-container">
 
             <div class="row">
-              <h2>Organizational Chart</h2>
-              <div class="divider"></div>
+              <div class="col-xs-8">
+                <h2>Organizational Chart</h2>
+              </div>
+              <div class="col-xs-4">
+                <a class="js-link orgchart-edit">Edit Mode <span class="glyphicon glyphicon-edit"></span></a>
+              </div>
+              <div class="col-xs-12 divider"></div>
             </div>
 
+            <div class="panel panel-success hide-soft edit-bar">
+              <div class="panel-body">
+                <button type="button" class="btn btn-success pull-left edit-add-node">
+                  Add Team <span class="glyphicon glyphicon-plus"></span>
+                </button>
+
+                <button type="button" class="btn btn-default pull-right edit-save">Save</button>
+                <button type="button" class="btn btn-primary pull-right edit-cancel">Cancel</button>
+              </div>
+            </div>
+    
             <div class="row js-plumb-container"><!-- orgChartTmpl --></div>
 
           </div>
@@ -493,6 +509,12 @@
           </td>
         </tr>
       <% }); %>
+
+      <tr>
+        <td colspan="12">
+          <a class="add-new-project js-link">Add New <span class="glyphicon glyphicon-plus"></span></a>
+        </td>
+      </tr>
 
     </script>
 

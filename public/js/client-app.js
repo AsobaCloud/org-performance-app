@@ -31,6 +31,18 @@
                 id: 1235,
                 name: 'Teammate 5',
                 description: ''
+            }, {
+                id: 1236,
+                name: 'Teammate 6',
+                description: ''
+            }, {
+                id: 1237,
+                name: 'Teammate 7',
+                description: ''
+            }, {
+                id: 1238,
+                name: 'Teammate 8',
+                description: ''
             }
         ]);
 
@@ -52,6 +64,18 @@
                 title: 'Baz',
                 status: 'done',
                 id: 1233
+            }, {
+                title: 'Work on sales',
+                status: 'doing',
+                id: 1235
+            }, {
+                title: 'Payrole for May',
+                status: 'doing',
+                id: 1236
+            }, {
+                title: 'Payrole for April',
+                status: 'done',
+                id: 1237
             }
         ]);
 
@@ -59,43 +83,43 @@
             {
                 name: 'Executive Team',
                 id: 12345670, // Fake the ids until server is done
-                y: 10,
+                y: 0,
                 x: 150,
-                contains: ['12345675', '12345673', '12345674']
+                contains: [12345675, 12345673, 12345674]
             }, {
                 name: 'IT',
                 id: 12345675, // Fake the ids until server is done
-                y: 160,
+                y: 150,
                 x: 75,
-                contains: ['12345671', '12345672']
+                contains: [12345671, 12345672]
             }, {
                 name: 'IT Team 1',
                 id: 12345671, // Fake the ids until server is done
-                y: 310,
+                y: 300,
                 x: 25,
-                cards: cards.toJSON(), // TODO: sync with cards collection
-                members: userCollection.toJSON() // TODO: sync with users collection
+                cards: [1231, 1233],
+                members: [1231, 1232]
             }, {
                 name: 'IT Team 2',
                 id: 12345672, // Fake the ids until server is done
-                y: 310,
+                y: 300,
                 x: 125,
-                cards: cards.toJSON(), // TODO: sync with cards collection
-                members: userCollection.toJSON() // TODO: sync with users collection
+                cards: [1232, 1234],
+                members: [1233,1234]
             }, {
                 name: 'Financing',
                 id: 12345673, // Fake the ids until server is done
-                y: 160,
+                y: 150,
                 x: 265,
-                cards: cards.toJSON(), // TODO: sync with cards collection
-                members: userCollection.toJSON() // TODO: sync with users collection
+                cards: [1236, 1237],
+                members: [1235, 1236]
             }, {
                 name: 'Marketing',
                 id: 12345674, // Fake the ids until server is done
-                y: 160,
+                y: 150,
                 x: 365,
-                cards: cards.toJSON(), // TODO: sync with cards collection
-                members: userCollection.toJSON() // TODO: sync with users collection
+                cards: [1235],
+                members: [1237, 1238]
             }
         ]);
 
@@ -123,7 +147,8 @@
         // Build the sidebar on init
         var sidebarKanbanView = new window.APP.Views.SidebarKanbanView({
             el: $('#collapseKanban').get(0),
-            collection: teamCollection
+            teamCollection: teamCollection,
+            userCollection: userCollection
         });
 
         sidebarKanbanView.render();
@@ -262,7 +287,9 @@
 
                 initalizedViews.kanban = new window.APP.Views.KanbanView({
                     el: $el.get(0),
-                    model: model
+                    model: model,
+                    cardCollection: cards,
+                    userCollection: userCollection
                 });
 
                 initalizedViews.kanban.render();

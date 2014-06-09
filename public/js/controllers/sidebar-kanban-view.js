@@ -8,27 +8,42 @@
 
         },
 
-        initialize: function () {
+        initialize: function (options) {
             if (!this.el) { throw new Error('SidebarKanbanView must be instantiated with an element'); }
-            if (!this.collection) { throw new Error('SidebarKanbanView must be instantiated with a collection'); }
+            if (!options.teamCollection) {
+                throw new Error('SidebarKanbanView must be instantiated with a teamCollection');
+            }
+            if (!options.userCollection) {
+                throw new Error('SidebarKanbanView must be instantiated with a userCollection');
+            }
 
+            this.teamCollection = options.teamCollection;
+            this.userCollection = options.userCollection;
         },
 
         render: function () {
 
-            var json = this.collection.toCompJSON();
+            var json = this.teamCollection.toCompJSON();
 
             // build a hashMap of the models so we don't have to repeatedly call underscore#find
-            var idMap = {};
-            _.each(json, function (m) {
-                idMap[m.id.toString()] = m;
-            });
+            // and populate the members array with related models
+            var idMap = {}, model, member;
+            for (var k = 0; k < json.length; k++) {
+                model = json[k]
+                idMap[model.id] = model;
+                if (!model.members) { continue; }
+                for (var l = 0; l < model.members.length; l++) {
+                    member = model.members[l];
+                    member = this.userCollection.get(member);
+                }
+            }
 
-            var contains, id;
+            // Build a tree structure from the teams collection based on which teams are contained by which
+            var contains;
             for (var i = 0; i < json.length; i++) {
                 contains = json[i].contains || [];
                 for (var j = 0; j < contains.length; j++) {
-                    id = contains[j].toString();
+                    id = contains[j];
                     contains[j] = idMap[contains[j]];
                     idMap[id].isContained = true;
                 }

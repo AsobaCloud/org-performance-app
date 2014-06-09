@@ -11,6 +11,11 @@ overflowEllipsis()
   text-overflow ellipsis
   -o-text-overflow ellipsis
 
+transition(params)
+  -moz-transition params
+  -o-transition params
+  -webkit-transition params
+  transition params
 
 html, body
   height: 100%;
@@ -87,6 +92,7 @@ html, body
 
 .js-plumb-container
   position relative
+  height 550px
 
 #orgchart-container
   .team-block
@@ -95,6 +101,12 @@ html, body
     border solid 2px #444
     position absolute
     border-radius 5px
+  .orgchart-edit
+    margin-top 40px
+    display inline-block
+  .panel-body
+    button
+      margin-right 5px
 
 #dashboard-container
   .chart
@@ -116,3 +128,6 @@ html, body
   padding-top 10px
   margin-bottom 10px
   border-bottom 1px solid #ddd
+
+.hide-soft
+  display none
